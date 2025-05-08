@@ -90,10 +90,33 @@ class TodoPage extends StatelessWidget {
                               seletedDate.selectedDate = null;
                             }
                           }
-                      }, child: Text('Tambah'))
+                      }, child: Text('Tambah')
+                      )
                   ],
                 ),
               ),
+               SizedBox(height: 16.0),
+                Expanded(
+                  child: BlocBuilder<TodoBlocBloc, TodoBlocState>(
+                    builder: (context, state) {
+                    if (state is TodoBlocLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    }else if (state is TodoBlocLoaded) {
+                      if (state.todos.isEmpty) {
+                        return Center(child: Text('Todo list is empty'));
+                      }
+
+
+                      
+                    }
+
+                    }
+
+                  )
+
+                ),
+
+
             ],
           ),
         ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todobloc/bloc/todo_bloc_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class TodoPage extends StatelessWidget {
   const TodoPage({super.key});
 
@@ -10,21 +9,27 @@ class TodoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final _key = GlobalKey<FormState>();
     final _controller = TextEditingController();
-    return Scaffold (
+    return Scaffold(
       body: SafeArea(
         child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text('Todo List'),
-          ],
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Text('Todo List'),
+              Row(
+                children: [
+                  Text('Selected Data'),
+                  BlocBuilder<TodoBlocBloc, TodoBlocState>(
+                    builder: (context, state) {
+                      
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        
-        )
-        
-        ),
-
-
+      ),
     );
   }
 }

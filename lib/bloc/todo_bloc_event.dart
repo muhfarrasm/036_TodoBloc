@@ -4,7 +4,7 @@ part of 'todo_bloc_bloc.dart';
 sealed class TodoBlocEvent {}
 final class TodoEventAdd extends TodoBlocEvent {
   final String title;
-  final String date;
+  final DateTime  date;
   TodoEventAdd({required this.title,required this.date });
 
 

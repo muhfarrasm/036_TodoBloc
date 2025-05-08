@@ -13,12 +13,15 @@ class TodoPage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
+          child: 
+          Column(
             children: [
               Text('Todo List'),
+              SizedBox(height: 16.0),
               Row(
                 children: [
-                  Text('Selected Data'),
+                  Column(children: [
+                    Text('Selected Data'),
                   BlocBuilder<TodoBlocBloc, TodoBlocState>(
                     builder: (context, state) {
                       if (state is TodoBlocLoaded) {
@@ -31,10 +34,11 @@ class TodoPage extends StatelessWidget {
                       return Text('No date selected');
                     },
                   ),
-                ],
-              ),
 
-              SizedBox(width: 16.0),
+                  ],
+                  ),
+                  
+                  SizedBox(width: 16.0),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
@@ -54,6 +58,13 @@ class TodoPage extends StatelessWidget {
                   child: Text('Select Date'),
                 ),
               ),
+
+
+
+                ],
+              ),
+
+              
               SizedBox(height: 16.0),
               Form(
                 key: _key,
@@ -72,36 +83,39 @@ class TodoPage extends StatelessWidget {
                           }
                           return null;
                         },
-                      )
+                      ),
                     ),
 
+                    SizedBox(width: 16.0),
                     FilledButton(
-                      onPressed:(){
-                         if (_key.currentState!.validate()) {
-                            final seletedDate = context.read<TodoBlocBloc>().state;
-                            if (seletedDate is TodoBlocLoaded) {
-                              context.read<TodoBlocBloc>().add(
-                                TodoEventAdd(
-                                  title: _controller.text, 
-                                  date: seletedDate.selectedDate!,
-                                )
-                              );
-                              _controller.clear();
-                              seletedDate.selectedDate = null;
-                            }
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          final seletedDate =
+                              context.read<TodoBlocBloc>().state;
+                          if (seletedDate is TodoBlocLoaded) {
+                            context.read<TodoBlocBloc>().add(
+                              TodoEventAdd(
+                                title: _controller.text,
+                                date: seletedDate.selectedDate!,
+                              ),
+                            );
+                            _controller.clear();
+                            seletedDate.selectedDate = null;
                           }
-                      }, child: Text('Tambah')
-                      )
+                        }
+                      },
+                      child: Text('Tambah'),
+                    ),
                   ],
                 ),
               ),
-               SizedBox(height: 16.0),
-                Expanded(
-                  child: BlocBuilder<TodoBlocBloc, TodoBlocState>(
-                    builder: (context, state) {
+              SizedBox(height: 16.0),
+              Expanded(
+                child: BlocBuilder<TodoBlocBloc, TodoBlocState>(
+                  builder: (context, state) {
                     if (state is TodoBlocLoading) {
                       return Center(child: CircularProgressIndicator());
-                    }else if (state is TodoBlocLoaded) {
+                    } else if (state is TodoBlocLoaded) {
                       if (state.todos.isEmpty) {
                         return Center(child: Text('Todo list is empty'));
                       }
@@ -116,7 +130,7 @@ class TodoPage extends StatelessWidget {
                               color: Colors.blue[50],
                               borderRadius: BorderRadius.circular(8.0),
                             ),
-                             child: Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
@@ -140,30 +154,33 @@ class TodoPage extends StatelessWidget {
                                           ? 'Completed'
                                           : 'Not Completed',
                                       style: TextStyle(
-                                        color: todo.isCompleted
-                                            ? Colors.green
-                                            : Colors.red,
+                                        color:
+                                            todo.isCompleted
+                                                ? Colors.green
+                                                : Colors.red,
                                       ),
                                     ),
                                   ],
                                 ),
+                                Checkbox(
+                                  value: todo.isCompleted,
+                                  onChanged: (value) {
+                                    context.read<TodoBlocBloc>().add(
+                                      TodoEventComplete(index: index),
+                                    );
+                                  },
+                                ),
                               ],
-                             ),
+                            ),
                           );
-                        }
+                        },
                       );
-
-
-                      
+                    } else {
+                      return Center(child: Text('No todos available'));
                     }
-
-                    }
-
-                  )
-
+                  },
                 ),
-
-
+              ),
             ],
           ),
         ),
